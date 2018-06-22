@@ -1,12 +1,7 @@
 #include "distribution.h"
 
-// global variables must not be modified
-float get_delta_max() {
-  return delta_max;
-}
-
 //distribution function definition
 #pragma omp declare simd
-float dist_func(const float alpha, float rn) {
-  return get_delta_max()*sinf(alpha*rn)*expf(-rn*rn);
+float dist_func(float buffer, const float alpha, float rn) {
+  return buffer + delta_max*sinf(alpha*rn)*expf(-rn*rn);
 }

@@ -33,18 +33,38 @@ int diffusion(const int n_particles,
               VSLStreamStatePtr rnStream) {
   
   int n_escaped=0;
-  float x;
+  // float rn[n_particles];
+  // float x[n_particles];
+
+  // for(int i=0; i<n_particles; i++) {
+  //   x[i] = 0.0f;
+  // }
+
+  // for(int j=0; j<n_steps; j++) {
+  //   float *p = rn;
+  //   vsRngUniform(VSL_RNG_METHOD_UNIFORM_STD, rnStream, n_particles, p, -1.0, 1.0);
+
+  //   for(int k=0; k<n_particles; k++) {
+  //     x[k] = dist_func(x[k], alpha, rn[k]);
+  //   }
+  // }
+
+  // #pragma omp simd reduction(+: n_escaped)
+  // for(int k=0; k<n_particles; k++) {
+  //   if(x[k] > x_threshold) n_escaped += 1;
+  // }
+ 
   float rn;
-  x = 0.0f;
   
-  #pragma omp parallel for reduction(+: n_escaped)
+  #pragma omp simd reduction(+: n_escaped)
   for(int i = 0; i < n_particles; i++) {
-    #pragma omp parallel for simd reduction(+: x)
-    for (int j = 0; j < n_steps; j++) {
+    float x = 0.0f;
+    #pragma omp simd reduction(+: x)
+    for (int j = i; j < i + n_steps; j++) {
       //Intel MKL function to generate random numbers
       vsRngUniform(VSL_RNG_METHOD_UNIFORM_STD, rnStream, 1, &rn, -1.0, 1.0);
 
-      x += dist_func(alpha, rn);
+      x = dist_func(x, alpha, rn);
     }
     if (x > x_threshold) n_escaped += 1;
   }

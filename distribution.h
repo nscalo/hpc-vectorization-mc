@@ -4,8 +4,6 @@
 #include <omp.h>
 const float delta_max = 1.0f;
 
-float get_delta_max();
-
 #pragma omp declare simd
-float dist_func(const float alpha, float rn);
+float dist_func(float buffer, const float alpha, float rn);
 #endif
