@@ -26,6 +26,7 @@
 //   return n_escaped;
 // }
 
+#pragma omp simd
 int diffusion(const int n_particles, 
               const int n_steps, 
               const float x_threshold,
