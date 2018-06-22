@@ -64,7 +64,7 @@ int diffusion(const int n_particles,
         //Intel MKL function to generate random numbers
         for(int k = 0; k < number_split^(pow/2); k++) {
           for(int i = 0; i < number_split^(pow/2); i++) {
-            pos[k + idx] += dist_func(alpha, rn[p_idx + idx]);
+            pos[p_idx + idx] += dist_func(alpha, rn[p_idx + idx]);
             #pragma omp atomic
             p_idx += 1;
           }
