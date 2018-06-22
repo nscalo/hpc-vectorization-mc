@@ -8,7 +8,7 @@ float dist_func(float buffer, const float alpha, float rn) {
 
 #pragma omp declare simd
 bool partition_func(int *status, int n_steps, int number_split) {
-  status -= number_split^2;
+  status -= number_split;
   if(status > 0) return true;
   return false;
 }

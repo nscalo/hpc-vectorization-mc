@@ -35,11 +35,13 @@ int diffusion(const int n_particles,
   
   int n_escaped=0;
   int pow = 2;
-  int shift_register = 5;
+  int p_particles = n_particles;
+  p_particles /= pow;
+  int shift_register = 6;
   int number_split = 1<<shift_register;
   int w = 0, s = 0;
-  float rn[number_split];
-  int p_particles = n_particles;
+  float rn[p_particles];
+  
   float pos[n_particles];
   int idx;
 
@@ -50,23 +52,26 @@ int diffusion(const int n_particles,
   
   while(s < n_steps) {
     idx = 0;
-    if(partition_func(&p_particles, n_steps, number_split^pow) == true) {
-      int errorcode = vsRngUniform(VSL_RNG_METHOD_UNIFORM_STD, rnStream, number_split^pow, rn, -1.0f, 1.0f);
+    int iter = 1;
+    int i_idx = 0;
+    while(iter <= 2) {
+      int errorcode = vsRngUniform(VSL_RNG_METHOD_UNIFORM_STD, rnStream, p_particles, rn, -1.0f, 1.0f);
       if(errorcode != VSL_STATUS_OK) {
         printf("Error code %d", errorcode);
       }
-      int p_idx = 0;
-      //Intel MKL function to generate random numbers
-      for(int k = 0; k < number_split^(pow/2); k++) {
-        for(int i = 0; i < number_split^(pow/2); i++) {
-          pos[k + idx] = dist_func(pos[idx], alpha, rn[p_idx + idx]);
-          #pragma omp atomic
-          p_idx += 1;
+      for(int idx = iter*i_idx; idx < p_particles; idx += number_split^pow) {
+        int p_idx = 0;
+        //Intel MKL function to generate random numbers
+        for(int k = 0; k < number_split^(pow/2); k++) {
+          for(int i = 0; i < number_split^(pow/2); i++) {
+            pos[k + idx] = dist_func(pos[idx], alpha, rn[p_idx + idx]);
+            #pragma omp atomic
+            p_idx += 1;
+          }
         }
       }
-      idx += number_split^pow;
-    } else {
-      break;
+      iter += 1;
+      i_idx += p_particles;
     }
     s += 1;
   }
