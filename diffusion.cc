@@ -26,7 +26,6 @@
 //   return n_escaped;
 // }
 
-#pragma omp simd
 int diffusion(const int n_particles, 
               const int n_steps, 
               const float x_threshold,
@@ -35,19 +34,24 @@ int diffusion(const int n_particles,
   
   int n_escaped=0;
  
-  float rn;
-  
-  #pragma omp simd reduction(+: n_escaped)
-  for(int i = 0; i < n_particles; i++) {
-    float x = 0.0f;
-    #pragma omp simd reduction(+: x)
-    for (int j = 0; j < n_steps; j++) {
-      //Intel MKL function to generate random numbers
-      vsRngUniform(VSL_RNG_METHOD_UNIFORM_STD, rnStream, 1, &rn, -1.0, 1.0);
+  float pos[n_particles];
+  float rn[n_particles*n_steps];
 
-      x = dist_func(x, alpha, rn);
+  for(int i=0; i<n_particles; i++) {
+    pos[i] = 0.0f;
+  }
+
+  vsRngUniform(VSL_RNG_METHOD_UNIFORM_STD, rnStream, n_particles*n_steps, rn, -1.0, 1.0);
+
+  for (int j = 0; j < n_particles*n_steps; j+=n_particles) {
+    //Intel MKL function to generate random numbers
+    for(int i=j; i<j+n_particles; i++) {
+      pos[i%n_particles] = dist_func(pos[i%n_particles], alpha, rn[i]);
     }
-    if (x > x_threshold) n_escaped += 1;
+  }
+  #pragma omp simd reduction(+: n_escaped)
+  for(int i=0; i<n_particles; i++) {
+    if (pos[i] > x_threshold) n_escaped += 1;
   }
   return n_escaped;
 }
