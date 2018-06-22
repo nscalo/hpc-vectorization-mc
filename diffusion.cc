@@ -59,7 +59,7 @@ int diffusion(const int n_particles,
       if(errorcode != VSL_STATUS_OK) {
         printf("Error code %d", errorcode);
       }
-      for(int idx = iter*i_idx; idx < p_particles; idx += number_split^pow) {
+      for(int idx = i_idx; idx < iter*p_particles; idx += number_split^pow) {
         int p_idx = 0;
         //Intel MKL function to generate random numbers
         for(int k = 0; k < number_split^(pow/2); k++) {
