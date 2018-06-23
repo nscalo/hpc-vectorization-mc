@@ -2,12 +2,11 @@
 #define DISTRIBUTION_H
 #include <cmath>
 #include <omp.h>
+#include <mkl.h>
 const float delta_max = 1.0f;
 
 #pragma omp declare simd
 float dist_func(const float alpha, float rn);
 
-#pragma omp declare simd
-bool partition_func(int *status, int n_steps, int number_split);
-
+int iterate_particles(const float alpha, unsigned int i, short int a, int total_length, VSLStreamStatePtr rnStream, int nn_particles, float *pos);
 #endif
