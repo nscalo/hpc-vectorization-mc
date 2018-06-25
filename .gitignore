@@ -1,0 +1,7 @@
+*.exe
+*.obj
+*.zip
+*.tar
+*.tar.gz
+app-*
+.gitginore

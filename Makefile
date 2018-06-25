@@ -1,5 +1,5 @@
 CXX=icpc
-CXXFLAGS=-QaxMIC-AVX512 -Qopenmp -Qmkl
+CXXFLAGS=-QaxMIC-AVX512 -Qopenmp -Qopenmp-simd -Qmkl
 OPTRPT=-Qopt-report=5
 # CXXLIB=-cxxlib="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include"
 
