@@ -1,0 +1,535 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 18.0.3.210 Build 20180410
+
+Compiler options: /Qopt-report=5 /QaxMIC-AVX512 /Qopenmp /Qopenmp-simd /Qmkl /o:app
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -Qinline-factor: 100
+  -Qinline-min-size: 30
+  -Qinline-max-size: 276
+  -Qinline-max-total-size: 2000
+  -Qinline-max-per-routine: 10000
+  -Qinline-max-per-compile: 500000
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+
+Begin optimization report for: main(int, char **)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main(int, char **)) [1/7=14.3%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(35,33)
+  -> EXTERN: (39,13) atof(const char *)
+  -> EXTERN: (42,19) atof(const char *)
+  -> EXTERN: (50,3) vslNewStream(VSLStreamStatePtr *, int, unsigned int)
+  -> INLINE: (52,27) ref_diffusion(int, int, float, float, VSLStreamStatePtr) (isz = 47) (sz = 62)
+    -> EXTERN: (27,7) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (28,22) sinf(float)
+    -> EXTERN: (28,37) expf(float)
+  -> EXTERN: (60,21) omp_get_wtime()
+  -> EXTERN: (61,19) diffusion(int, int, float, float, VSLStreamStatePtr)
+  -> EXTERN: (62,21) omp_get_wtime()
+  -> INLINE (MANUAL): (65,34) sqrt<int, void>(int) (isz = 1) (sz = 8)
+  -> (66,5) printf(const char *, ...) (isz = 21) (sz = 28)
+     [[ Unable to inline callsite  <1>]]
+  -> (69,5) printf(const char *, ...) (isz = 21) (sz = 28)
+     [[ Unable to inline callsite  <1>]]
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(23,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(52,27)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(25,5) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(52,27)
+      remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(35,33):remark #34051: REGISTER ALLOCATION : [main] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc:35
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :    4[ rax rdx rcx r8]
+        
+    Routine temporaries
+        Total         :      29
+            Global    :      21
+            Local     :       8
+        Regenerable   :       1
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ -1.$%]
+            Writes    :       0 [0.00e+000 ~ -1.$%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ -1.$%]
+            Writes    :       0 [0.00e+000 ~ -1.$%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: main(int, char **) [knl]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main(int, char **)) [1/7=14.3%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(35,33)
+  -> EXTERN: (39,13) atof(const char *)
+  -> EXTERN: (42,19) atof(const char *)
+  -> EXTERN: (50,3) vslNewStream(VSLStreamStatePtr *, int, unsigned int)
+  -> INLINE: (52,27) ref_diffusion(int, int, float, float, VSLStreamStatePtr) (isz = 47) (sz = 62)
+    -> EXTERN: (27,7) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (28,22) sinf(float)
+    -> EXTERN: (28,37) expf(float)
+  -> EXTERN: (60,21) omp_get_wtime()
+  -> EXTERN: (61,19) diffusion(int, int, float, float, VSLStreamStatePtr)
+  -> EXTERN: (62,21) omp_get_wtime()
+  -> INLINE (MANUAL): (65,34) sqrt<int, void>(int) (isz = 1) (sz = 8)
+  -> (66,5) printf(const char *, ...) (isz = 21) (sz = 28)
+     [[ Unable to inline callsite  <1>]]
+  -> (69,5) printf(const char *, ...) (isz = 21) (sz = 28)
+     [[ Unable to inline callsite  <1>]]
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(23,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(52,27)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(25,5) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(52,27)
+      remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(35,33):remark #34051: REGISTER ALLOCATION : [main.Z] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc:35
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   63[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm31 k0-k7]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :   31[ rax rdx rcx rbp r8-r10 r12-r15 zmm0-zmm5 zmm10-zmm21 k0-k1]
+        
+    Routine temporaries
+        Total         :     124
+            Global    :      45
+            Local     :      79
+        Regenerable   :      30
+        Spilled       :      11
+        
+    Routine stack
+        Variables     :      16 bytes*
+            Reads     :       5 [2.64e+001 ~ 3.6%]
+            Writes    :       2 [0.00e+000 ~ 0.0%]
+        Spills        :     136 bytes*
+            Reads     :      11 [1.10e+001 ~ 1.5%]
+            Writes    :      11 [2.40e+000 ~ 0.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: main(int, char **) [generic]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main(int, char **)) [1/7=14.3%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(35,33)
+  -> EXTERN: (39,13) atof(const char *)
+  -> EXTERN: (42,19) atof(const char *)
+  -> EXTERN: (50,3) vslNewStream(VSLStreamStatePtr *, int, unsigned int)
+  -> INLINE: (52,27) ref_diffusion(int, int, float, float, VSLStreamStatePtr) (isz = 47) (sz = 62)
+    -> EXTERN: (27,7) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (28,22) sinf(float)
+    -> EXTERN: (28,37) expf(float)
+  -> EXTERN: (60,21) omp_get_wtime()
+  -> EXTERN: (61,19) diffusion(int, int, float, float, VSLStreamStatePtr)
+  -> EXTERN: (62,21) omp_get_wtime()
+  -> INLINE (MANUAL): (65,34) sqrt<int, void>(int) (isz = 1) (sz = 8)
+  -> (66,5) printf(const char *, ...) (isz = 21) (sz = 28)
+     [[ Unable to inline callsite  <1>]]
+  -> (69,5) printf(const char *, ...) (isz = 21) (sz = 28)
+     [[ Unable to inline callsite  <1>]]
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(23,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(52,27)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(25,5) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(52,27)
+      remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(35,33):remark #34051: REGISTER ALLOCATION : [main.A] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc:35
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :   21[ rax rdx rcx rbp r8-r10 r12-r15 zmm0-zmm3 zmm10-zmm15]
+        
+    Routine temporaries
+        Total         :     100
+            Global    :      44
+            Local     :      56
+        Regenerable   :      26
+        Spilled       :      11
+        
+    Routine stack
+        Variables     :      16 bytes*
+            Reads     :       5 [2.64e+001 ~ 4.0%]
+            Writes    :       2 [0.00e+000 ~ 0.0%]
+        Spills        :      96 bytes*
+            Reads     :       6 [6.00e+000 ~ 0.9%]
+            Writes    :       6 [1.20e+000 ~ 0.2%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: printf(const char *, ...)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (printf(const char *, ...)) [2/7=28.6%] C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\ucrt\stdio.h(952,5)
+  -> DELETED: (955,9) __vcrt_va_start_verify_argument_type<const char *const>() (isz = 0) (sz = 2)
+  -> EXTERN: (955,9) __va_start(va_list *, ...)
+  -> INLINE (MANUAL): (956,19) _vfprintf_l(FILE *, const char *, _locale_t, va_list) (isz = 5) (sz = 18)
+    -> EXTERN: (641,16) __stdio_common_vfprintf(unsigned __int64, FILE *, const char *, _locale_t, va_list)
+    -> (641,40) __local_stdio_printf_options() (isz = 1) (sz = 5)
+       [[ Called routine is noinline  <2>]]
+  -> EXTERN: (956,31) __acrt_iob_func(unsigned int)
+
+
+    Report from: Code generation optimizations [cg]
+
+C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\ucrt\stdio.h(952,5):remark #34051: REGISTER ALLOCATION : [printf] C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\ucrt\stdio.h:952
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :    7[ rax rdx rcx r8-r10 r15]
+        
+    Routine temporaries
+        Total         :      43
+            Global    :      23
+            Local     :      20
+        Regenerable   :       3
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [1.00e+000 ~ 2.1%]
+            Writes    :       2 [2.00e+000 ~ 4.2%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: __vcrt_va_start_verify_argument_type<const char *const>()
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__vcrt_va_start_verify_argument_type<const char *const>()) Y:\Application\software\VisualStudioCommunity\VC\Tools\MSVC\14.12.25827\include\vadefs.h(150,9)
+
+===========================================================================
+
+Begin optimization report for: __local_stdio_printf_options()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (__local_stdio_printf_options()) [4/7=57.1%] C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\ucrt\corecrt_stdio_config.h(85,5)
+
+
+    Report from: Code generation optimizations [cg]
+
+C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\ucrt\corecrt_stdio_config.h(85,5):remark #34051: REGISTER ALLOCATION : [__local_stdio_printf_options] C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\ucrt\corecrt_stdio_config.h:85
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :    1[ rax]
+        
+    Routine temporaries
+        Total         :      20
+            Global    :       0
+            Local     :      20
+        Regenerable   :       2
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: _vfprintf_l(FILE *, const char *, _locale_t, va_list)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (_vfprintf_l(FILE *, const char *, _locale_t, va_list)) C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\ucrt\stdio.h(640,5)
+
+===========================================================================
+
+Begin optimization report for: ref_diffusion(int, int, float, float, VSLStreamStatePtr)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (ref_diffusion(int, int, float, float, VSLStreamStatePtr)) [6/7=85.7%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(21,47)
+  -> EXTERN: (27,7) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+  -> EXTERN: (28,22) sinf(float)
+  -> EXTERN: (28,37) expf(float)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(23,3)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(25,5)
+      remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(21,47):remark #34051: REGISTER ALLOCATION : [?ref_diffusion@@YAHHHMMPEAX@Z] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc:21
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :    6[ rax rdx rcx r8 zmm2-zmm3]
+        
+    Routine temporaries
+        Total         :      37
+            Global    :      23
+            Local     :      14
+        Regenerable   :       1
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: ref_diffusion(int, int, float, float, VSLStreamStatePtr) [knl]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (ref_diffusion(int, int, float, float, VSLStreamStatePtr)) [6/7=85.7%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(21,47)
+  -> EXTERN: (27,7) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+  -> EXTERN: (28,22) sinf(float)
+  -> EXTERN: (28,37) expf(float)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(23,3)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(25,5)
+      remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(21,47):remark #34051: REGISTER ALLOCATION : [?ref_diffusion@@YAHHHMMPEAX@Z.Z] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc:21
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   63[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm31 k0-k7]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :   27[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm4 zmm11-zmm15 k0-k1]
+        
+    Routine temporaries
+        Total         :      60
+            Global    :      37
+            Local     :      23
+        Regenerable   :      12
+        Spilled       :      13
+        
+    Routine stack
+        Variables     :       4 bytes*
+            Reads     :       1 [2.50e+001 ~ 3.3%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+        Spills        :     144 bytes*
+            Reads     :      13 [1.17e+001 ~ 1.6%]
+            Writes    :      13 [1.17e+001 ~ 1.6%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: ref_diffusion(int, int, float, float, VSLStreamStatePtr) [generic]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (ref_diffusion(int, int, float, float, VSLStreamStatePtr)) [6/7=85.7%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(21,47)
+  -> EXTERN: (27,7) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+  -> EXTERN: (28,22) sinf(float)
+  -> EXTERN: (28,37) expf(float)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(23,3)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(25,5)
+      remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc(21,47):remark #34051: REGISTER ALLOCATION : [?ref_diffusion@@YAHHHMMPEAX@Z.A] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\main.cc:21
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :   23[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0 zmm2-zmm3 zmm11-zmm15]
+        
+    Routine temporaries
+        Total         :      54
+            Global    :      36
+            Local     :      18
+        Regenerable   :      10
+        Spilled       :      13
+        
+    Routine stack
+        Variables     :       4 bytes*
+            Reads     :       1 [2.50e+001 ~ 3.7%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+        Spills        :     144 bytes*
+            Reads     :      13 [1.17e+001 ~ 1.7%]
+            Writes    :      13 [1.17e+001 ~ 1.7%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: sqrt<int, void>(int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (sqrt<int, void>(int)) Y:\Application\software\VisualStudioCommunity\VC\Tools\MSVC\14.12.25827\include\xtgmath.h(95,1)
+
+===========================================================================
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING FOOTNOTES:
+
+<1> Inlining the function will lead to incorrect program behavior.
+
+<2> The routine declaration is annotated with "__declspec(noinline)".  Remove 
+    this annotation to permit the compiler to inline this routine.
+

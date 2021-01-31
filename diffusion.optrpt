@@ -1,0 +1,1121 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 18.0.3.210 Build 20180410
+
+Compiler options: /c /Qopt-report=5 /QaxMIC-AVX512 /Qopenmp /Qopenmp-simd /Qmkl /o:diffusion.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -Qinline-factor: 100
+  -Qinline-min-size: 30
+  -Qinline-max-size: 276
+  -Qinline-max-total-size: 2000
+  -Qinline-max-per-routine: 10000
+  -Qinline-max-per-compile: 500000
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+
+Begin optimization report for: diffusion(int, int, float, float, VSLStreamStatePtr)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (diffusion(int, int, float, float, VSLStreamStatePtr)) [1/2=50.0%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(11,43)
+  -> EXTERN: (16,9) _vla_alloc(__int64)
+  -> INLINE: (31,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> INLINE: (32,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> INLINE: (33,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> INLINE: (34,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> EXTERN: (43,10) _vla_free(void *, __int64)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(31,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(31,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(32,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(32,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(33,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(33,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(34,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(34,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+<Peeled loop for vectorization>
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.800
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 1.909
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 12 
+   remark #15477: vector cost: 0.680 
+   remark #15478: estimated potential speedup: 12.670 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+<Remainder loop for vectorization>
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.800
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+   remark #25408: memset generated
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+      remark #15389: vectorization support: reference pos has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(22,5) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or /Qvec-threshold0 to override
+      remark #15305: vectorization support: vector length 4
+      remark #15399: vectorization support: unroll factor set to 2
+      remark #15309: vectorization support: normalized vectorization overhead 0.300
+      remark #15451: unmasked unaligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 3 
+      remark #15477: vector cost: 1.250 
+      remark #15478: estimated potential speedup: 1.670 
+      remark #15488: --- end vector cost summary ---
+      remark #25439: unrolled with remainder by 2  
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+   <Remainder>
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(26,3)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(11,43):remark #34051: REGISTER ALLOCATION : [?diffusion@@YAHHHMMPEAX@Z] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc:11
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :    6[ rax rdx rcx r8 zmm2-zmm3]
+        
+    Routine temporaries
+        Total         :      37
+            Global    :      23
+            Local     :      14
+        Regenerable   :       1
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: diffusion(int, int, float, float, VSLStreamStatePtr) [knl]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (diffusion(int, int, float, float, VSLStreamStatePtr)) [1/2=50.0%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(11,43)
+  -> EXTERN: (16,9) _vla_alloc(__int64)
+  -> INLINE: (31,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> INLINE: (32,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> INLINE: (33,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> INLINE: (34,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> EXTERN: (43,10) _vla_free(void *, __int64)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(31,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(31,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(32,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(32,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(33,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(33,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(34,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(34,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+<Peeled loop for vectorization>
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.800
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 1.909
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 12 
+   remark #15477: vector cost: 0.680 
+   remark #15478: estimated potential speedup: 12.670 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+<Remainder loop for vectorization>
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.800
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+   remark #25408: memset generated
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+      remark #15389: vectorization support: reference pos has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(22,5) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or /Qvec-threshold0 to override
+      remark #15305: vectorization support: vector length 4
+      remark #15399: vectorization support: unroll factor set to 2
+      remark #15309: vectorization support: normalized vectorization overhead 0.300
+      remark #15451: unmasked unaligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 3 
+      remark #15477: vector cost: 1.250 
+      remark #15478: estimated potential speedup: 1.670 
+      remark #15488: --- end vector cost summary ---
+      remark #25439: unrolled with remainder by 2  
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+   <Remainder>
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(26,3)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3):remark #34026: call to memset implemented as a call to optimized library version
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(11,43):remark #34051: REGISTER ALLOCATION : [?diffusion@@YAHHHMMPEAX@Z.Z] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc:11
+
+    Hardware registers
+        Reserved     :    3[ rsp r13 rip]
+        Available    :   62[ rax rdx rcx rbx rbp rsi rdi r8-r12 r14-r15 mm0-mm7 zmm0-zmm31 k0-k7]
+        Callee-save  :   17[ rbx rbp rsi rdi r12 r14-r15 xmm6-xmm15]
+        Assigned     :   35[ rax rdx rcx rbx rsi rdi r8-r12 r14-r15 zmm0-zmm18 k1-k3]
+        
+    Routine temporaries
+        Total         :     695
+            Global    :     311
+            Local     :     384
+        Regenerable   :      52
+        Spilled       :      54
+        
+    Routine stack
+        Variables     :     619 bytes*
+            Reads     :      11 [2.20e+001 ~ 0.2%]
+            Writes    :      10 [2.60e+001 ~ 0.2%]
+        Spills        :     992 bytes*
+            Reads     :     113 [1.14e+003 ~ 8.7%]
+            Writes    :      75 [3.84e+002 ~ 2.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: diffusion(int, int, float, float, VSLStreamStatePtr) [generic]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (diffusion(int, int, float, float, VSLStreamStatePtr)) [1/2=50.0%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(11,43)
+  -> EXTERN: (16,9) _vla_alloc(__int64)
+  -> INLINE: (31,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> INLINE: (32,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> INLINE: (33,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> INLINE: (34,5) iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) (isz = 50) (sz = 69)
+    -> EXTERN: (46,147) _vla_free(void *, __int64)
+    -> EXTERN: (48,9) _vla_alloc(__int64)
+    -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+    -> EXTERN: (53,36) dist_func(float, float)
+  -> EXTERN: (43,10) _vla_free(void *, __int64)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(31,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.044
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 28.250 
+   remark #15478: estimated potential speedup: 3.770 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=4, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(31,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.168
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(31,5)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(32,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.044
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 28.250 
+   remark #15478: estimated potential speedup: 3.770 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=4, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(32,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.168
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(32,5)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(33,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.044
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 28.250 
+   remark #15478: estimated potential speedup: 3.770 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=4, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(33,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[2*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.168
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(33,5)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(34,5)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.044
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 28.250 
+   remark #15478: estimated potential speedup: 3.770 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=4, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(34,5)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[3*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.168
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3) inlined into Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(34,5)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+<Peeled loop for vectorization>
+   remark #25015: Estimate of max trip count of loop=3
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+   remark #15305: vectorization support: vector length 4
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 2.200
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 20 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 6.940 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+<Remainder loop for vectorization>
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 3.667
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(38,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+   remark #25408: memset generated
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+      remark #15389: vectorization support: reference pos has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(22,5) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or /Qvec-threshold0 to override
+      remark #15305: vectorization support: vector length 4
+      remark #15399: vectorization support: unroll factor set to 2
+      remark #15309: vectorization support: normalized vectorization overhead 0.300
+      remark #15451: unmasked unaligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 3 
+      remark #15477: vector cost: 1.250 
+      remark #15478: estimated potential speedup: 2.180 
+      remark #15488: --- end vector cost summary ---
+      remark #25439: unrolled with remainder by 2  
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+
+   LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3)
+   <Remainder>
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(26,3)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(20,3):remark #34026: call to memset implemented as a call to optimized library version
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(11,43):remark #34051: REGISTER ALLOCATION : [?diffusion@@YAHHHMMPEAX@Z.A] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc:11
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :   21[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm3 zmm13-zmm15]
+        
+    Routine temporaries
+        Total         :     426
+            Global    :     186
+            Local     :     240
+        Regenerable   :      41
+        Spilled       :      38
+        
+    Routine stack
+        Variables     :      28 bytes*
+            Reads     :       9 [2.10e+001 ~ 0.3%]
+            Writes    :       6 [2.20e+001 ~ 0.4%]
+        Spills        :     296 bytes*
+            Reads     :      76 [2.99e+002 ~ 4.9%]
+            Writes    :      71 [2.59e+002 ~ 4.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *)) [2/2=100.0%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(46,147)
+  -> EXTERN: (46,147) _vla_free(void *, __int64)
+  -> EXTERN: (48,9) _vla_alloc(__int64)
+  -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+  -> EXTERN: (53,36) dist_func(float, float)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(46,147):remark #34051: REGISTER ALLOCATION : [?iterate_particles@@YAHMIFHPEAXHPEAM@Z] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc:46
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :    6[ rax rdx rcx r8-r9 zmm0]
+        
+    Routine temporaries
+        Total         :      37
+            Global    :      23
+            Local     :      14
+        Regenerable   :       1
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) [knl]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *)) [2/2=100.0%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(46,147)
+  -> EXTERN: (46,147) _vla_free(void *, __int64)
+  -> EXTERN: (48,9) _vla_alloc(__int64)
+  -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+  -> EXTERN: (53,36) dist_func(float, float)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.010
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 25.810 
+   remark #15478: estimated potential speedup: 4.020 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=16, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -Qvecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.049
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(46,147):remark #34051: REGISTER ALLOCATION : [?iterate_particles@@YAHMIFHPEAXHPEAM@Z.Z] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc:46
+
+    Hardware registers
+        Reserved     :    3[ rsp r13 rip]
+        Available    :   62[ rax rdx rcx rbx rbp rsi rdi r8-r12 r14-r15 mm0-mm7 zmm0-zmm31 k0-k7]
+        Callee-save  :   17[ rbx rbp rsi rdi r12 r14-r15 xmm6-xmm15]
+        Assigned     :   34[ rax rdx rcx rbx rsi rdi r8-r12 r14-r15 zmm0-zmm18 k1-k2]
+        
+    Routine temporaries
+        Total         :     171
+            Global    :      84
+            Local     :      87
+        Regenerable   :       6
+        Spilled       :      28
+        
+    Routine stack
+        Variables     :     207 bytes*
+            Reads     :       1 [1.00e+000 ~ 0.1%]
+            Writes    :       2 [2.00e+000 ~ 0.3%]
+        Spills        :     448 bytes*
+            Reads     :      38 [6.76e+001 ~ 9.2%]
+            Writes    :      38 [4.30e+001 ~ 5.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *) [generic]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (iterate_particles(float, unsigned int, short, int, VSLStreamStatePtr, int, float *)) [2/2=100.0%] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(46,147)
+  -> EXTERN: (46,147) _vla_free(void *, __int64)
+  -> EXTERN: (48,9) _vla_alloc(__int64)
+  -> EXTERN: (49,3) vsRngUniform(int, VSLStreamStatePtr, int, float *, float, float)
+  -> EXTERN: (53,36) dist_func(float, float)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3)
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.044
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 111 
+   remark #15477: vector cost: 28.250 
+   remark #15478: estimated potential speedup: 3.770 
+   remark #15484: vector function calls: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: dist_func(float, float) with simdlen=4, actual parameter types: (uniform,vector)   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,36) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector)
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference rn[i] has aligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,53) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15389: vectorization support: reference pos[(a-1)*nn_particles+i] has unaligned access   [ Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(53,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.168
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(52,3)
+<Remainder loop for vectorization>
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc(46,147):remark #34051: REGISTER ALLOCATION : [?iterate_particles@@YAHMIFHPEAXHPEAM@Z.A] Y:\Courses\Parallelism on Intel Architecture\Assignments\vectorization-mc\diffusion.cc:46
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :   18[ rbx rbp rsi rdi r12-r15 xmm6-xmm15]
+        Assigned     :   20[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm2 zmm6 zmm14-zmm15]
+        
+    Routine temporaries
+        Total         :     106
+            Global    :      48
+            Local     :      58
+        Regenerable   :       7
+        Spilled       :      14
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+000 ~ 0.0%]
+            Writes    :       0 [0.00e+000 ~ 0.0%]
+        Spills        :      88 bytes*
+            Reads     :      11 [1.00e+001 ~ 3.2%]
+            Writes    :      11 [1.00e+001 ~ 3.2%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
